@@ -66,7 +66,7 @@
 
   # Enable the X11 windowing system.
   services.xserver = {
-      desktopManager.xfce.enable = true;
+      desktopManager.plasma5.enable = true;
       displayManager.sddm.enable = true;
       enable = true;
       layout = "fr";
