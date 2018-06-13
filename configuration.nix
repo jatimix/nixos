@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./users.nix
     ];
 
   # Use the GRUB 2 boot loader.
@@ -25,7 +26,7 @@
    };
 
   # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  # time.timeZone = "Europe/Paris";
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -36,7 +37,8 @@
       htop
       git
       source-code-pro
-      zsh oh-my-zsh
+      vim
+      zsh antigen
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -83,16 +85,6 @@
 
   # Enable touchpad support.
   # services.xserver.libinput.enable = true;
-
-  # users.users.bineau = {
-  #   home = "/home/bineau";
-  users.users.tim = {
-      home = "/home/tim";
-      isNormalUser = true;     
-      description = "God";
-      extraGroups = [ "wheel" ];
-      shell = pkgs.zsh;
-  };
   
   # Define a user account. Don't forget to set a password with ‘passwd’.
   # users.extraUsers.guest = {
