@@ -32,12 +32,16 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
       emacs
+      binutils
+      unzip
       terminator
       wget
       htop
       git
       source-code-pro
       vim
+      tree
+      docker
       zsh antigen
   ];
 
@@ -72,7 +76,7 @@
      autorun = true;
      desktopManager.plasma5.enable = true;
      displayManager.lightdm.enable = true;
-     xkbOptions = "ctrl:swapcaps";
+     # xkbOptions = "ctrl:swapcaps";
   };
 
   services.compton = {
@@ -82,6 +86,49 @@
     shadow = true;
     fadeDelta = 4;
   };
+
+  programs.zsh = {
+     enable = true;
+     enableCompletion  = true;
+     shellAliases = {
+          cap = "pygmentize";
+	  clean = "rm -f *~";
+	  killall = "pkill -x";
+     };
+     
+     interactiveShellInit = ''
+         source ${pkgs.antigen}/share/antigen/antigen.zsh
+
+	 antigen use oh-my-zsh
+	 antigen bundle git           # support for git
+	 antigen bundle git-extras    # ?
+	 antigen bundle python        # support for python
+	 antigen bundle history       # [h] give history, [hsi] allow grep in history
+	 antigen bundle pip           # Autocompletion on pip
+	 antigen bundle npm           # Same for npm
+	 antigen bundle rvm           # Same for rvm
+
+	 antigen bundle zsh-users/zsh-syntax-highlighting # give syntax highlight while writing
+
+         # Additionnal completion definition
+	 antigen bundle zsh-users/zsh-completions src
+	 antigen bundle sdurrheimer/docker-compose-zsh-completion
+	 
+	 antigen theme https://github.com/caiogondim/bullet-train-oh-my-zsh-theme bullet-train
+	 antigen apply
+
+         #== History ================
+         setopt APPEND_HISTORY          # history appends to existing file
+         setopt HIST_FIND_NO_DUPS       # history search finds once only
+         setopt HIST_IGNORE_ALL_DUPS    # remove all earlier duplicate lines
+         setopt HIST_REDUCE_BLANKS      # trim multiple insgnificant blanks in history
+         setopt HIST_NO_STORE           # remove the history (fc -l) command from the history when invoked
+
+         HISTFILE=$HOME/.zsh/history    # history file location
+         HISTSIZE=1000000               # number of history lines kept internally
+         SAVEHIST=1000000               # max number of history lines saved
+	 '';
+   };
 
   # Enable touchpad support.
   # services.xserver.libinput.enable = true;
