@@ -16,7 +16,9 @@
   boot.loader.grub.version = 2;
   boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
 
-  networking.hostName = "nixos"; # Define your hostname.
+  nixpkgs.config.allowUnfree = true;
+
+  networking.hostName = "giedi-prime"; # Define your hostname.
 
   # Select internationalisation properties.
   i18n = {
@@ -26,7 +28,12 @@
    };
 
   # Set your time zone.
-  # time.timeZone = "Europe/Paris";
+  time.timeZone = "Europe/Paris";
+
+  fonts.fonts = with pkgs; [
+                  # input-fonts
+                  source-code-pro
+            ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -38,7 +45,6 @@
       wget
       htop
       git
-      source-code-pro
       vim
       tree
       docker
@@ -92,47 +98,47 @@
      enableCompletion  = true;
      shellAliases = {
           cap = "pygmentize";
-	  clean = "rm -f *~";
-	  killall = "pkill -x";
-     };
-     
-     interactiveShellInit = ''
-         source ${pkgs.antigen}/share/antigen/antigen.zsh
+     clean = "rm -f *~";
+     killall = "pkill -x";
+   };
 
-	 antigen use oh-my-zsh
-	 antigen bundle git           # support for git
-	 antigen bundle git-extras    # ?
-	 antigen bundle python        # support for python
-	 antigen bundle history       # [h] give history, [hsi] allow grep in history
-	 antigen bundle pip           # Autocompletion on pip
-	 antigen bundle npm           # Same for npm
-	 antigen bundle rvm           # Same for rvm
+  interactiveShellInit = ''
+   source ${pkgs.antigen}/share/antigen/antigen.zsh
 
-	 antigen bundle zsh-users/zsh-syntax-highlighting # give syntax highlight while writing
+   antigen use oh-my-zsh
+   antigen bundle git           # support for git
+   antigen bundle git-extras    # ?
+   antigen bundle python        # support for python
+   antigen bundle history       # [h] give history, [hsi] allow grep in history
+   antigen bundle pip           # Autocompletion on pip
+   antigen bundle npm           # Same for npm
+   antigen bundle rvm           # Same for rvm
 
-         # Additionnal completion definition
-	 antigen bundle zsh-users/zsh-completions src
-	 antigen bundle sdurrheimer/docker-compose-zsh-completion
-	 
-	 antigen theme https://github.com/caiogondim/bullet-train-oh-my-zsh-theme bullet-train
-	 antigen apply
+   antigen bundle zsh-users/zsh-syntax-highlighting # give syntax highlight while writing
 
-         #== History ================
-         setopt APPEND_HISTORY          # history appends to existing file
-         setopt HIST_FIND_NO_DUPS       # history search finds once only
-         setopt HIST_IGNORE_ALL_DUPS    # remove all earlier duplicate lines
-         setopt HIST_REDUCE_BLANKS      # trim multiple insgnificant blanks in history
-         setopt HIST_NO_STORE           # remove the history (fc -l) command from the history when invoked
+   # Additionnal completion definition
+   antigen bundle zsh-users/zsh-completions src
+   antigen bundle sdurrheimer/docker-compose-zsh-completion
 
-         HISTFILE=$HOME/.zsh/history    # history file location
-         HISTSIZE=1000000               # number of history lines kept internally
-         SAVEHIST=1000000               # max number of history lines saved
-	 '';
+   antigen theme https://github.com/caiogondim/bullet-train-oh-my-zsh-theme bullet-train
+   antigen apply
+
+   #== History ================
+   setopt APPEND_HISTORY          # history appends to existing file
+   setopt HIST_FIND_NO_DUPS       # history search finds once only
+   setopt HIST_IGNORE_ALL_DUPS    # remove all earlier duplicate lines
+   setopt HIST_REDUCE_BLANKS      # trim multiple insgnificant blanks in history
+   setopt HIST_NO_STORE           # remove the history (fc -l) command from the history when invoked
+
+   HISTFILE=$HOME/.zsh/history    # history file location
+   HISTSIZE=1000000               # number of history lines kept internally
+   SAVEHIST=1000000               # max number of history lines saved
+   '';
    };
 
   # Enable touchpad support.
   # services.xserver.libinput.enable = true;
-  
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   # users.extraUsers.guest = {
   #   isNormalUser = true;
