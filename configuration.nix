@@ -49,6 +49,8 @@
       tree
       docker
       zsh antigen
+      python3
+      python36Packages.virtualenv
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
